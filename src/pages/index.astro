@@ -1,0 +1,137 @@
+---
+import { getCollection } from 'astro:content';
+import ContentCard from '../components/common/ContentCard.astro';
+import {
+  arabicCategoryDescriptions,
+  arabicCategoryLabels,
+  arabicCategoryOrder,
+  bookHref,
+  flashcardCategoryLabels,
+  formatDate,
+  groupLibrary,
+  lessonHref,
+  sortBySurah,
+} from '../lib/content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const lessons = sortBySurah(await getCollection('deeper-look')).sort(
+  (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime(),
+);
+const latestLessons = lessons.slice(0, 3);
+const arabicArticles = await getCollection('arabic');
+const decks = await getCollection('flashcards');
+const books = groupLibrary(await getCollection('library')).slice(0, 4);
+---
+
+<BaseLayout title="Beyyine Notları" description="Kur’an tefsiri ve müzakere notları.">
+  <section class="border-b border-emerald-950/10 dark:border-white/10">
+    <div class="mx-auto grid max-w-6xl items-center gap-10 px-4 py-12 sm:py-16 lg:grid-cols-[minmax(0,22rem)_1fr]">
+      <img
+        src="/logo.jpg"
+        alt="Beyyine Notları. Kur’an Tefsiri ve Müzakere."
+        width="600"
+        height="600"
+        class="mx-auto w-full max-w-sm rounded-2xl shadow-lift"
+      />
+      <div>
+        <h1 class="font-serif text-4xl leading-tight text-stone-950 sm:text-5xl dark:text-amber-50">Beyyine Notları</h1>
+        <p class="mt-3 text-lg text-slate-700 dark:text-slate-300">Kur’an Tefsiri & Müzakere</p>
+        <p class="mt-5 max-w-2xl text-lg leading-8 text-slate-700 dark:text-slate-300">
+          Tefsir dersleri, sarf ve nahiv anlatımları, çevrilebilir ezber kartları ve kitap tahlilleri aynı kütüphanede.
+          Aramayı <kbd class="rounded border border-emerald-950/10 px-1.5 py-0.5 text-sm">Ctrl K</kbd> ile açın.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="/deeper-look" class="rounded-full bg-emerald-700 px-5 py-3 text-sm font-semibold text-white">Derslere geç</a>
+          <a href="/flashcards" class="rounded-full border border-emerald-950/15 px-5 py-3 text-sm font-semibold text-stone-950 dark:border-amber-200/40 dark:text-amber-100">
+            Kart çalış
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-6xl space-y-14 px-4 py-12">
+    <section>
+      <div class="mb-5 flex items-end justify-between gap-4">
+        <h2 class="font-serif text-3xl text-stone-950 dark:text-amber-50">Son tefsir dersleri</h2>
+        <a href="/deeper-look" class="text-sm text-amber-800 hover:underline dark:text-amber-200">Tüm fihrist</a>
+      </div>
+      <div class="grid gap-4 md:grid-cols-3" data-pagefind-ignore="all">
+        {
+          latestLessons.map((lesson) => (
+            <ContentCard
+              href={lessonHref(lesson)}
+              eyebrow={`${lesson.data.surahName} · Ayet ${lesson.data.verseRange}`}
+              title={lesson.data.title}
+              summary={lesson.data.summary}
+              meta={formatDate(lesson.data.publishDate)}
+            />
+          ))
+        }
+      </div>
+    </section>
+
+    <section>
+      <div class="mb-5 flex items-end justify-between gap-4">
+        <h2 class="font-serif text-3xl text-stone-950 dark:text-amber-50">Arapça ilimleri</h2>
+        <a href="/arapca" class="text-sm text-amber-800 hover:underline dark:text-amber-200">İlimler</a>
+      </div>
+      <div class="grid gap-4 md:grid-cols-2" data-pagefind-ignore="all">
+        {
+          arabicCategoryOrder.map((category) => {
+            const count = arabicArticles.filter((article) => article.data.category === category).length;
+            return (
+              <ContentCard
+                href={`/arapca/${category}`}
+                eyebrow="Arapça"
+                title={arabicCategoryLabels[category]}
+                summary={arabicCategoryDescriptions[category]}
+                meta={count === 0 ? 'Henüz ders yok' : `${count} ders`}
+              />
+            );
+          })
+        }
+      </div>
+    </section>
+
+    <section>
+      <div class="mb-5 flex items-end justify-between gap-4">
+        <h2 class="font-serif text-3xl text-stone-950 dark:text-amber-50">Flashcard desteleri</h2>
+        <a href="/flashcards" class="text-sm text-amber-800 hover:underline dark:text-amber-200">Tüm desteler</a>
+      </div>
+      <div class="grid gap-4 md:grid-cols-2" data-pagefind-ignore="all">
+        {
+          decks.map((deck) => (
+            <ContentCard
+              href={`/flashcards/${deck.id}`}
+              eyebrow={flashcardCategoryLabels[deck.data.category]}
+              title={deck.data.deckTitle}
+              summary={deck.data.description}
+              meta={`${deck.data.cards.length} kart`}
+            />
+          ))
+        }
+      </div>
+    </section>
+
+    <section>
+      <div class="mb-5 flex items-end justify-between gap-4">
+        <h2 class="font-serif text-3xl text-stone-950 dark:text-amber-50">Kütüphane</h2>
+        <a href="/kutuphane" class="text-sm text-amber-800 hover:underline dark:text-amber-200">Kitap notları</a>
+      </div>
+      <div class="grid gap-4 md:grid-cols-2" data-pagefind-ignore="all">
+        {
+          books.map((book) => (
+            <ContentCard
+              href={bookHref(book.slug)}
+              eyebrow={book.category}
+              title={book.bookTitle}
+              summary={book.author}
+              meta={`${book.notes.length} not`}
+            />
+          ))
+        }
+      </div>
+    </section>
+  </div>
+</BaseLayout>

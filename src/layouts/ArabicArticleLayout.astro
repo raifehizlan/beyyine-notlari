@@ -1,0 +1,92 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getEntry } from 'astro:content';
+import ReadingTabs from '../components/common/ReadingTabs';
+import StickyAudioPlayer from '../components/deeper-look/StickyAudioPlayer';
+import { arabicCategoryLabels, difficultyLabels, formatDate } from '../lib/content';
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  article: CollectionEntry<'arabic'>;
+}
+
+const { article } = Astro.props;
+const { title, summary, category, difficulty, publishDate, relatedFlashcardDeck, tags, audio } = article.data;
+const categoryLabel = arabicCategoryLabels[category];
+const deck = relatedFlashcardDeck ? await getEntry('flashcards', relatedFlashcardDeck) : undefined;
+---
+
+<BaseLayout title={title} description={summary} searchCategory={categoryLabel}>
+  <article class="mx-auto max-w-3xl px-4 py-8">
+    <nav aria-label="Konum" class="text-sm text-slate-500">
+      <ol class="flex flex-wrap items-center gap-2">
+        <li><a class="hover:text-emerald-700" href="/">Ana Sayfa</a></li>
+        <li aria-hidden="true">/</li>
+        <li><a class="hover:text-emerald-700" href="/arapca">Arapça</a></li>
+        <li aria-hidden="true">/</li>
+        <li><a class="hover:text-emerald-700" href={`/arapca/${category}`}>{categoryLabel}</a></li>
+        <li aria-hidden="true">/</li>
+        <li class="text-slate-800 dark:text-slate-100" aria-current="page">{title}</li>
+      </ol>
+    </nav>
+
+    <p class="mt-6 text-xs font-semibold uppercase tracking-[0.16em] text-amber-800 dark:text-amber-200">{categoryLabel}</p>
+    <h1 class="mt-3 font-serif text-4xl leading-tight text-stone-950 dark:text-amber-50">{title}</h1>
+    <p class="mt-4 text-sm text-slate-500">
+      {difficultyLabels[difficulty]} · {formatDate(publishDate)}
+      {audio?.duration && <span> · {audio.duration}</span>}
+    </p>
+    <p class="mt-4 text-lg leading-8 text-slate-700 dark:text-slate-300">{summary}</p>
+    {
+      audio && (
+        <StickyAudioPlayer
+          client:load
+          title={title}
+          subtitle={`${categoryLabel} podcasti`}
+          duration={audio.duration}
+          mp3DirectUrl={audio.mp3DirectUrl}
+          spotifyUrl={audio.spotifyUrl}
+          youtubeUrl={audio.youtubeUrl}
+        />
+      )
+    }
+
+    <ReadingTabs
+      client:load
+      title={title}
+      detail={`${categoryLabel} · ${difficultyLabels[difficulty]}`}
+      tabs={[
+        { id: 'ders', label: 'Ders', download: 'Dersi indir' },
+        { id: 'notlar', label: 'Notlar', download: 'Notları indir' },
+      ]}
+    />
+    <slot />
+
+    {
+      deck && (
+        <aside class="mt-10 rounded-3xl border border-emerald-700/20 bg-emerald-700/5 p-5">
+          <p class="text-xs font-semibold uppercase tracking-[0.16em] text-amber-800 dark:text-amber-200">Bağlantılı deste</p>
+          <h2 class="mt-2 font-serif text-2xl text-stone-950 dark:text-amber-50">{deck.data.deckTitle}</h2>
+          <p class="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">{deck.data.description}</p>
+          <a href={`/flashcards/${deck.id}`} class="mt-4 inline-flex rounded-full bg-emerald-700 px-4 py-2 text-sm font-semibold text-white">
+            Desteyi çalış
+          </a>
+        </aside>
+      )
+    }
+
+    {
+      tags.length > 0 && (
+        <ul class="mt-8 flex flex-wrap gap-2">
+          {tags.map((tag) => (
+            <li>
+              <a href={`/arapca?etiket=${encodeURIComponent(tag)}`} class="rounded-full bg-amber-100 px-3 py-1 text-sm text-amber-950 dark:bg-amber-900/40 dark:text-amber-100">
+                #{tag}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </article>
+</BaseLayout>

@@ -1,0 +1,100 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import EntryList from '../../../components/common/EntryList.astro';
+import { chunkItems, formatDate, lessonGroupSize, lessonHref, sortLessons, verseSpan } from '../../../lib/content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const lessons = sortLessons(await getCollection('deeper-look'));
+  const numbers = [...new Set(lessons.map((lesson) => lesson.data.surahNumber))];
+  return numbers.map((surahNumber) => ({
+    params: { surah: String(surahNumber) },
+    props: {
+      lessons: lessons.filter((lesson) => lesson.data.surahNumber === surahNumber),
+    },
+  }));
+}
+
+interface Props {
+  lessons: CollectionEntry<'deeper-look'>[];
+}
+
+const { lessons } = Astro.props;
+const surahName = lessons[0].data.surahName;
+const surahNumber = lessons[0].data.surahNumber;
+const span = verseSpan(lessons.map((lesson) => lesson.data.verseRange));
+const groups = chunkItems(lessons, lessonGroupSize);
+
+function groupLabel(group: CollectionEntry<'deeper-look'>[]) {
+  const first = group[0].data.lessonNumber;
+  const last = group[group.length - 1].data.lessonNumber;
+  return first === last ? `${first}. ders` : `${first}–${last}. ders`;
+}
+---
+
+<BaseLayout title={`${surahName} Sûresi`} description={`${surahName} sûresinin ders fihristi.`} searchCategory="Tefsir">
+  <div class="mx-auto max-w-3xl px-4 py-10">
+    <nav aria-label="Konum" class="text-sm text-slate-500">
+      <ol class="flex flex-wrap items-center gap-2">
+        <li><a class="hover:text-emerald-700" href="/deeper-look">Tefsir</a></li>
+        <li aria-hidden="true">/</li>
+        <li class="text-slate-800 dark:text-slate-100" aria-current="page">{surahName} Sûresi</li>
+      </ol>
+    </nav>
+
+    <p class="mt-6 text-xs font-semibold uppercase tracking-[0.16em] text-amber-800 dark:text-amber-200">
+      {surahNumber}. sûre
+    </p>
+    <h1 class="mt-3 font-serif text-4xl text-stone-950 dark:text-amber-50">{surahName} Sûresi</h1>
+    <p class="mt-4 text-slate-600 dark:text-slate-300">
+      {lessons.length} ders{span && ` · Ayet ${span}`}.
+      {groups.length > 1 && ' Uzun sûre yirmişer derslik gruplara ayrılır.'}
+    </p>
+
+    {
+      groups.length > 1 && (
+        <nav aria-label="Ders grupları" class="mt-6 flex flex-wrap gap-2">
+          {groups.map((group) => (
+            <a
+              href={`#grup-${group[0].data.lessonNumber}`}
+              class="rounded-full border border-emerald-950/15 px-3 py-1.5 text-sm text-stone-950 hover:border-amber-700 dark:border-white/15 dark:text-amber-50"
+            >
+              {groupLabel(group)}
+            </a>
+          ))}
+        </nav>
+      )
+    }
+
+    <div class="mt-8 space-y-8">
+      {
+        groups.map((group) => (
+          <section id={`grup-${group[0].data.lessonNumber}`}>
+            {
+              groups.length > 1 && (
+                <h2 class="font-serif text-xl text-stone-950 dark:text-amber-50">
+                  {groupLabel(group)}
+                  <span class="ml-2 text-base font-normal text-slate-500">
+                    Ayet {verseSpan(group.map((lesson) => lesson.data.verseRange))}
+                  </span>
+                </h2>
+              )
+            }
+            <div class={groups.length > 1 ? 'mt-3' : undefined}>
+              <EntryList
+                items={group.map((lesson) => ({
+                  href: lessonHref(lesson),
+                  kicker: `${lesson.data.lessonNumber}`,
+                  title: lesson.data.title,
+                  detail: `Ayet ${lesson.data.verseRange}`,
+                  meta: formatDate(lesson.data.publishDate),
+                  tags: lesson.data.tags,
+                }))}
+              />
+            </div>
+          </section>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>

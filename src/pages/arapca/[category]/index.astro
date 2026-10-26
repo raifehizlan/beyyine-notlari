@@ -1,0 +1,81 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import EntryList from '../../../components/common/EntryList.astro';
+import { arabicCategoryLabels, arabicCategoryOrder, difficultyLabels, formatDate, sortArabic, withPodcastMeta } from '../../../lib/content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const articles = sortArabic(await getCollection('arabic'));
+  return arabicCategoryOrder.map((category) => ({
+    params: { category },
+    props: {
+      category,
+      articles: articles.filter((article) => article.data.category === category),
+    },
+  }));
+}
+
+interface Props {
+  category: (typeof arabicCategoryOrder)[number];
+  articles: CollectionEntry<'arabic'>[];
+}
+
+const { category, articles } = Astro.props;
+const label = arabicCategoryLabels[category];
+const levels = ['baslangic', 'orta', 'ileri'] as const;
+const groups = levels
+  .map((level) => ({ level, items: articles.filter((article) => article.data.difficulty === level) }))
+  .filter((group) => group.items.length > 0);
+---
+
+<BaseLayout title={label} description={`${label} dersleri.`} searchCategory={label}>
+  <div class="mx-auto max-w-3xl px-4 py-10">
+    <nav aria-label="Konum" class="text-sm text-slate-500">
+      <ol class="flex flex-wrap items-center gap-2">
+        <li><a class="hover:text-emerald-700" href="/arapca">Arapça</a></li>
+        <li aria-hidden="true">/</li>
+        <li class="text-slate-800 dark:text-slate-100" aria-current="page">{label}</li>
+      </ol>
+    </nav>
+
+    <p class="mt-6 text-xs font-semibold uppercase tracking-[0.16em] text-amber-800 dark:text-amber-200">Arapça</p>
+    <h1 class="mt-3 font-serif text-4xl text-stone-950 dark:text-amber-50">{label}</h1>
+    <p class="mt-4 text-slate-600 dark:text-slate-300">
+      {articles.length === 0 ? 'Bu ilimde henüz ders yok.' : `${articles.length} ders. Başlangıç, orta ve ileri ayrı durur.`}
+    </p>
+
+    <div data-tag-banner hidden class="mt-6 flex items-center justify-between gap-3 rounded-2xl bg-amber-100 px-4 py-3 text-sm text-amber-950 dark:bg-amber-900/40 dark:text-amber-50">
+      <p>
+        Etiket: <strong data-tag-name></strong>
+      </p>
+      <a href={`/arapca/${category}`} class="font-semibold underline">Tüm {label} dersleri</a>
+    </div>
+    <p data-tag-empty hidden class="mt-6 text-sm text-slate-500">Bu etiketle eşleşen konu yok.</p>
+
+    <div class="mt-8 space-y-8">
+      {
+        groups.map((group) => (
+          <section>
+            <h2 class="font-serif text-xl text-stone-950 dark:text-amber-50">{difficultyLabels[group.level]}</h2>
+            <div class="mt-3">
+              <EntryList
+                items={group.items.map((article) => ({
+                  href: `/arapca/${article.slug}`,
+                  kicker: String(article.data.order),
+                  title: article.data.title,
+                  detail: article.data.summary,
+                  meta: withPodcastMeta(formatDate(article.data.publishDate), article.data.audio),
+                  tags: article.data.tags,
+                }))}
+              />
+            </div>
+          </section>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  import '../../../scripts/tag-filter.ts';
+</script>

@@ -1,0 +1,29 @@
+---
+interface Props {
+  tab: 'tefsir' | 'notlar' | 'transkript';
+}
+
+const { tab } = Astro.props;
+const labels = {
+  tefsir: 'Editoryal tefsir ve analiz',
+  notlar: 'Ders ve çalışma notları',
+  transkript: 'Ders transkripti',
+};
+---
+
+<section
+  id={`panel-${tab}`}
+  data-lesson-tab={tab}
+  aria-label={labels[tab]}
+  class:list={['lesson-panel', { 'lesson-panel-active': tab === 'tefsir' }]}
+>
+  <div
+    class:list={[
+      'lesson-prose prose prose-slate max-w-none lg:prose-lg dark:prose-invert',
+      'prose-headings:font-serif',
+      'prose-strong:text-slate-900 dark:prose-strong:text-slate-100',
+    ]}
+  >
+    <slot />
+  </div>
+</section>

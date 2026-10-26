@@ -1,0 +1,52 @@
+---
+interface Props {
+  caption?: string;
+  headers: string[];
+  rows: string[][];
+  arabicColumns?: number[];
+}
+
+const { caption, headers, rows, arabicColumns = [] } = Astro.props;
+const arabic = new Set(arabicColumns);
+---
+
+<div class="not-prose my-8 overflow-x-auto rounded-2xl border border-emerald-950/10 dark:border-white/10">
+  <table class="w-full min-w-[36rem] border-collapse text-sm">
+    {
+      caption && (
+        <caption class="border-b border-emerald-950/10 bg-emerald-700/5 px-4 py-3 text-left font-serif text-base text-stone-950 dark:border-white/10 dark:text-amber-50">
+          {caption}
+        </caption>
+      )
+    }
+    <thead class="bg-slate-100/80 text-left text-slate-600 dark:bg-slate-800/80 dark:text-slate-300">
+      <tr>
+        {headers.map((header) => (
+          <th scope="col" class="px-4 py-3 font-semibold">
+            {header}
+          </th>
+        ))}
+      </tr>
+    </thead>
+    <tbody>
+      {
+        rows.map((row) => (
+          <tr class="border-t border-emerald-950/10 dark:border-white/10">
+            {row.map((cell, index) => (
+              <td
+                class:list={[
+                  'px-4 py-3 text-slate-800 dark:text-slate-100',
+                  arabic.has(index) && 'font-arabic text-xl leading-loose',
+                ]}
+                dir={arabic.has(index) ? 'rtl' : undefined}
+                lang={arabic.has(index) ? 'ar' : undefined}
+              >
+                {cell}
+              </td>
+            ))}
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>

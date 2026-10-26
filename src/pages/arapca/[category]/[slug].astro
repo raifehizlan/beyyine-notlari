@@ -1,0 +1,26 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import ArabicArticleLayout from '../../../layouts/ArabicArticleLayout.astro';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('arabic');
+  return articles.map((article) => {
+    const [category, ...rest] = article.slug.split('/');
+    return {
+      params: { category, slug: rest.join('/') },
+      props: { article },
+    };
+  });
+}
+
+interface Props {
+  article: CollectionEntry<'arabic'>;
+}
+
+const { article } = Astro.props;
+const { Content } = await article.render();
+---
+
+<ArabicArticleLayout article={article}>
+  <Content />
+</ArabicArticleLayout>

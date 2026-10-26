@@ -1,0 +1,26 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import DeeperLookLayout from '../../../layouts/DeeperLookLayout.astro';
+import { lessonParts, seriesNeighbors } from '../../../lib/content';
+
+export async function getStaticPaths() {
+  const lessons = await getCollection('deeper-look');
+  return lessons.map((lesson) => {
+    const { surah, slug } = lessonParts(lesson);
+    return { params: { surah, slug }, props: { lesson } };
+  });
+}
+
+interface Props {
+  lesson: CollectionEntry<'deeper-look'>;
+}
+
+const { lesson } = Astro.props;
+const lessons = await getCollection('deeper-look');
+const { previous, next } = seriesNeighbors(lessons, lesson);
+const { Content } = await lesson.render();
+---
+
+<DeeperLookLayout lesson={lesson} previous={previous} next={next}>
+  <Content />
+</DeeperLookLayout>

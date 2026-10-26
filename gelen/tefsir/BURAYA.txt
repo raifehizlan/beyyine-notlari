@@ -1,0 +1,27 @@
+Tefsir veya çalışma notunu bu klasöre bırak.
+
+Dosya adı:
+011-bakara-28-30.md
+011-bakara-28-30.docx
+011-bakara-28-30-notlar.md
+
+İlk sayı bölüm, sonra sûre, sonra ayet aralığı.
+Sonda -notlar yoksa metin Tefsir sekmesine gider.
+-notlar çalışma notudur. Aynı bölümün iki dosyası tek ders olur.
+
+İsteğe bağlı ilk satırlar:
+başlık: İnsanın Halifelik Görevi
+özet: Kısa cümle.
+youtube: https://youtu.be/...
+spotify: https://open.spotify.com/episode/...
+etiket: Halife, Hilafet
+
+Tek dosyada iki bölüm de olabilir. Başlıklar şöyle durur:
+
+# Tefsir
+...
+# Notlar
+...
+
+Word dosyası .docx olmalı. Eski .doc bu klasörde açılmaz.
+Ad uymayan dosyanın yanında .hata.txt belirir.

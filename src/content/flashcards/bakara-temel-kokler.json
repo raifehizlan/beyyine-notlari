@@ -1,0 +1,115 @@
+{
+  "deckTitle": "Bakara Sûresi: Sık Geçen Kökler",
+  "category": "kuran-kelimeleri",
+  "description": "Fâtiha'nın hamd ayeti ile Bakara'nın açılışında tekrar eden kökler. Ön yüzde kelime, arka yüzde mana, kök ve kısa bir ayet örneği vardır.",
+  "cards": [
+    {
+      "id": "hamd",
+      "front": {
+        "arabic": "حَمْد",
+        "transliteration": "hamd",
+        "hint": "Övgü. Şükürden daha geniş düşün."
+      },
+      "back": {
+        "meaning": "Kemal ve nimet sebebiyle yapılan övgü",
+        "root": "ح م د",
+        "grammarType": "İsim, mastar",
+        "quranicExample": {
+          "verseArabic": "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ",
+          "surahVerse": "Fâtiha 1:2",
+          "translation": "Hamd, âlemlerin Rabbi Allah'adır."
+        }
+      }
+    },
+    {
+      "id": "rabb",
+      "front": {
+        "arabic": "رَبّ",
+        "transliteration": "rabb",
+        "hint": "Sahip demekle yetinme."
+      },
+      "back": {
+        "meaning": "Terbiye eden, mürebbî, kademe kademe yetiştiren",
+        "root": "ر ب ب",
+        "grammarType": "İsim",
+        "quranicExample": {
+          "verseArabic": "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ",
+          "surahVerse": "Fâtiha 1:2",
+          "translation": "Hamd, âlemlerin Rabbi Allah'adır."
+        }
+      }
+    },
+    {
+      "id": "huda",
+      "front": {
+        "arabic": "هُدًى",
+        "transliteration": "hüden",
+        "hint": "Yol gösterme."
+      },
+      "back": {
+        "meaning": "Hidayet, doğru yolu gösterme",
+        "root": "ه د ي",
+        "grammarType": "İsim",
+        "quranicExample": {
+          "verseArabic": "هُدًى لِلْمُتَّقِينَ",
+          "surahVerse": "Bakara 2:2",
+          "translation": "Müttakîler için bir hidayettir."
+        }
+      }
+    },
+    {
+      "id": "gayb",
+      "front": {
+        "arabic": "غَيْب",
+        "transliteration": "gayb",
+        "hint": "Duyu tek başına yetmez."
+      },
+      "back": {
+        "meaning": "Duyunun haber olmaksızın kuşatamadığı alan",
+        "root": "غ ي ب",
+        "grammarType": "İsim",
+        "quranicExample": {
+          "verseArabic": "الَّذِينَ يُؤْمِنُونَ بِالْغَيْبِ",
+          "surahVerse": "Bakara 2:3",
+          "translation": "Onlar gayba inanırlar."
+        }
+      }
+    },
+    {
+      "id": "kitab",
+      "front": {
+        "arabic": "كِتَاب",
+        "transliteration": "kitâb",
+        "hint": "Yazmak kökünden."
+      },
+      "back": {
+        "meaning": "Kitap, yazılmış ve bir araya getirilmiş kelam",
+        "root": "ك ت ب",
+        "grammarType": "İsim",
+        "quranicExample": {
+          "verseArabic": "ذَٰلِكَ الْكِتَابُ لَا رَيْبَ فِيهِ",
+          "surahVerse": "Bakara 2:2",
+          "translation": "İşte bu, kendisinde şüphe olmayan kitaptır."
+        }
+      }
+    },
+    {
+      "id": "infak",
+      "front": {
+        "arabic": "يُنفِقُونَ",
+        "transliteration": "yünfikûn",
+        "hint": "Dışarı aktarmak."
+      },
+      "back": {
+        "meaning": "İnfak ederler, rızıktan başkasına akıtırlar",
+        "root": "ن ف ق",
+        "grammarType": "Muzari fiil, çoğul",
+        "quranicExample": {
+          "verseArabic": "وَمِمَّا رَزَقْنَاهُمْ يُنفِقُونَ",
+          "surahVerse": "Bakara 2:3",
+          "translation": "Kendilerine verdiğimiz rızıktan infak ederler."
+        }
+      }
+    }
+  ]
+}

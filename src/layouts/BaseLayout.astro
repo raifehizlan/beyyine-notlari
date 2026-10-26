@@ -1,0 +1,63 @@
+---
+import '../styles/global.css';
+import Footer from '../components/common/Footer.astro';
+import Header from '../components/common/Header.astro';
+import SearchModal from '../components/common/SearchModal';
+
+interface Props {
+  title: string;
+  description?: string;
+  searchCategory?: string;
+}
+
+const {
+  title,
+  description = 'Kur’an tahlilleri, Arapça ilimleri ve kitap notları için çalışma portalı.',
+  searchCategory,
+} = Astro.props;
+
+const fullTitle = title === 'Beyyine Notları' ? title : `${title} · Beyyine Notları`;
+---
+
+<!doctype html>
+<html lang="tr">
+  <head>
+    <script is:inline>
+      (function () {
+        try {
+          var stored = localStorage.getItem('theme');
+          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (stored === 'dark' || (!stored && prefersDark)) document.documentElement.classList.add('dark');
+        } catch (error) {}
+      })();
+    </script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#FBF9F5" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+    <title>{fullTitle}</title>
+    {searchCategory && <meta data-pagefind-meta={`kategori:${searchCategory}`} />}
+  </head>
+  <body class="flex min-h-screen flex-col bg-paper text-slate-800 dark:bg-night dark:text-slate-100">
+    <a
+      href="#icerik"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-emerald-700 focus:px-4 focus:py-2 focus:text-white"
+    >
+      İçeriğe geç
+    </a>
+    <Header />
+    <main id="icerik" class="flex-1" data-pagefind-body>
+      {
+        searchCategory && (
+          <span class="sr-only" data-pagefind-filter="kategori">
+            {searchCategory}
+          </span>
+        )
+      }
+      <slot />
+    </main>
+    <Footer />
+    <SearchModal client:load />
+  </body>
+</html>

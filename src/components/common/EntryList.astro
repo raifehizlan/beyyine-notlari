@@ -1,0 +1,43 @@
+---
+export interface EntryItem {
+  href: string;
+  kicker: string;
+  title: string;
+  detail?: string;
+  meta?: string;
+  tags?: string[];
+}
+
+interface Props {
+  items: EntryItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<ul
+  class="divide-y divide-emerald-950/10 overflow-hidden rounded-2xl border border-emerald-950/10 bg-white/75 dark:divide-white/10 dark:border-white/10 dark:bg-slate-900/60"
+  data-pagefind-ignore="all"
+>
+  {
+    items.map((item) => (
+      <li data-tags={(item.tags ?? []).join('|')}>
+        <a
+          href={item.href}
+          class="flex items-baseline gap-4 px-4 py-3.5 transition hover:bg-amber-50/80 sm:px-5 dark:hover:bg-white/5"
+        >
+          <span class="w-16 shrink-0 text-xs font-semibold uppercase tracking-wide text-amber-800 dark:text-amber-200">
+            {item.kicker}
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block font-serif text-lg leading-snug text-stone-950 dark:text-amber-50">{item.title}</span>
+            {item.detail && (
+              <span class="mt-0.5 block truncate text-sm text-slate-600 dark:text-slate-300">{item.detail}</span>
+            )}
+          </span>
+          {item.meta && <span class="hidden shrink-0 text-xs text-slate-500 sm:block">{item.meta}</span>}
+        </a>
+      </li>
+    ))
+  }
+</ul>

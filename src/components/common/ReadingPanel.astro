@@ -1,0 +1,18 @@
+---
+interface Props {
+  tab: 'ders' | 'notlar';
+  open?: boolean;
+}
+
+const { tab, open = tab === 'ders' } = Astro.props;
+---
+
+<section
+  id={`panel-${tab}`}
+  data-lesson-tab={tab}
+  class:list={['lesson-panel', { 'lesson-panel-active': open }]}
+>
+  <div class="lesson-prose prose prose-slate max-w-none lg:prose-lg dark:prose-invert prose-headings:font-serif">
+    <slot />
+  </div>
+</section>

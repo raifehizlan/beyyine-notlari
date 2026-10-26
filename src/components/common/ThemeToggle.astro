@@ -1,0 +1,25 @@
+---
+import { Moon, Sun } from 'lucide-astro';
+---
+
+<button
+  type="button"
+  data-theme-toggle
+  class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-emerald-950/10 text-emerald-800 transition hover:border-emerald-700/40 hover:bg-emerald-700/5 dark:border-white/10 dark:text-emerald-200"
+  aria-label="Aydınlık ve karanlık tema arasında geçiş yap"
+>
+  <Sun class="hidden h-5 w-5 dark:block" aria-hidden="true" />
+  <Moon class="h-5 w-5 dark:hidden" aria-hidden="true" />
+</button>
+
+<script>
+  const toggles = document.querySelectorAll('[data-theme-toggle]');
+  toggles.forEach((toggle) => {
+    toggle.addEventListener('click', () => {
+      const root = document.documentElement;
+      const nextIsDark = !root.classList.contains('dark');
+      root.classList.toggle('dark', nextIsDark);
+      localStorage.setItem('theme', nextIsDark ? 'dark' : 'light');
+    });
+  });
+</script>

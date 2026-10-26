@@ -1,0 +1,97 @@
+{
+  "deckTitle": "Temel Sarf Kalıpları",
+  "category": "sarf-kaliplari",
+  "description": "Sülâsî mücerredin altı babı. Ön yüzde mazi ve muzari vezni, arka yüzde babın adı ve örnek fiil vardır.",
+  "cards": [
+    {
+      "id": "bab-nasr",
+      "front": {
+        "arabic": "فَعَلَ يَفْعُلُ",
+        "transliteration": "fa‘ale yef‘ulu",
+        "hint": "Muzaride orta harf ötre."
+      },
+      "back": {
+        "meaning": "Birinci bab. Örnek: yardım etti, yardım eder.",
+        "root": "ن ص ر",
+        "grammarType": "Sülâsî mücerred, nasr babı",
+        "quranicExample": {
+          "verseArabic": "نَصَرَ يَنْصُرُ",
+          "surahVerse": "Örnek fiil",
+          "translation": "Nesara yensuru: yardım etti, yardım eder."
+        }
+      }
+    },
+    {
+      "id": "bab-darabe",
+      "front": {
+        "arabic": "فَعَلَ يَفْعِلُ",
+        "transliteration": "fa‘ale yef‘ilu",
+        "hint": "Mazi fetha, muzari kesra."
+      },
+      "back": {
+        "meaning": "İkinci bab. Örnek: vurdu, vurur.",
+        "root": "ض ر ب",
+        "grammarType": "Sülâsî mücerred, darabe babı",
+        "quranicExample": {
+          "verseArabic": "ضَرَبَ يَضْرِبُ",
+          "surahVerse": "Örnek fiil",
+          "translation": "Darabe yadribu: vurdu, vurur."
+        }
+      }
+    },
+    {
+      "id": "bab-feth",
+      "front": {
+        "arabic": "فَعَلَ يَفْعَلُ",
+        "transliteration": "fa‘ale yef‘alu",
+        "hint": "İki fetha yan yana."
+      },
+      "back": {
+        "meaning": "Üçüncü bab. Çoğu örnekte boğaz harfi bulunur.",
+        "root": "ف ت ح",
+        "grammarType": "Sülâsî mücerred, feth babı",
+        "quranicExample": {
+          "verseArabic": "فَتَحَ يَفْتَحُ",
+          "surahVerse": "Örnek fiil",
+          "translation": "Feteha yeftahu: açtı, açar."
+        }
+      }
+    },
+    {
+      "id": "bab-semia",
+      "front": {
+        "arabic": "فَعِلَ يَفْعَلُ",
+        "transliteration": "fa‘ile yef‘alu",
+        "hint": "Mazi kesra, muzari fetha."
+      },
+      "back": {
+        "meaning": "Dördüncü bab. Duyular, haller ve geçici oluşlar burada sık görülür.",
+        "root": "س م ع",
+        "grammarType": "Sülâsî mücerred, semi‘a babı",
+        "quranicExample": {
+          "verseArabic": "سَمِعَ يَسْمَعُ",
+          "surahVerse": "Örnek fiil",
+          "translation": "Semie yesmeu: işitti, işitir."
+        }
+      }
+    },
+    {
+      "id": "bab-kerume",
+      "front": {
+        "arabic": "فَعُلَ يَفْعُلُ",
+        "transliteration": "fa‘ule yef‘ulu",
+        "hint": "İki ötre. Tabiat ve sabit sıfat."
+      },
+      "back": {
+        "meaning": "Beşinci bab. Huylar ve yerleşik nitelikler bu kapıdan çekilir.",
+        "root": "ك ر م",
+        "grammarType": "Sülâsî mücerred, kerume babı",
+        "quranicExample": {
+          "verseArabic": "كَرُمَ يَكْرُمُ",
+          "surahVerse": "Örnek fiil",
+          "translation": "Kerume yekrumu: kerem sahibi oldu."
+        }
+      }
+    }
+  ]
+}

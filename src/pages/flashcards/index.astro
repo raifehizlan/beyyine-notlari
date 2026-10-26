@@ -1,0 +1,35 @@
+---
+import { getCollection } from 'astro:content';
+import ContentCard from '../../components/common/ContentCard.astro';
+import { flashcardCategoryLabels } from '../../lib/content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const decks = (await getCollection('flashcards')).sort((a, b) => a.data.deckTitle.localeCompare(b.data.deckTitle, 'tr'));
+---
+
+<BaseLayout title="Flashcard" description="Kök, kelime ve sarf kalıpları için çalışma desteleri." searchCategory="Flashcard">
+  <div class="mx-auto max-w-6xl px-4 py-10">
+    <p class="text-xs font-semibold uppercase tracking-[0.16em] text-amber-800 dark:text-amber-200">Ezber</p>
+    <h1 class="mt-3 font-serif text-4xl text-stone-950 dark:text-amber-50">Flashcard desteleri</h1>
+    <p class="mt-4 max-w-2xl leading-7 text-slate-600 dark:text-slate-300">
+      Kartı çevirin, bildiklerinizi ayırın, kalanları tekrar edin. Klavye ve kaydırma desteği çalışma ekranındadır.
+    </p>
+    {
+      decks.length === 0 ? (
+        <p class="mt-8 text-sm text-slate-500">Henüz deste yok.</p>
+      ) : (
+        <div class="mt-8 grid gap-4 md:grid-cols-2" data-pagefind-ignore="all">
+          {decks.map((deck) => (
+            <ContentCard
+              href={`/flashcards/${deck.id}`}
+              eyebrow={flashcardCategoryLabels[deck.data.category]}
+              title={deck.data.deckTitle}
+              summary={deck.data.description}
+              meta={`${deck.data.cards.length} kart`}
+            />
+          ))}
+        </div>
+      )
+    }
+  </div>
+</BaseLayout>

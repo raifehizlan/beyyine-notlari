@@ -1,0 +1,60 @@
+---
+import { getCollection } from 'astro:content';
+import ContentCard from '../../components/common/ContentCard.astro';
+import EntryList from '../../components/common/EntryList.astro';
+import { arabicCategoryDescriptions, arabicCategoryLabels, arabicCategoryOrder, difficultyLabels, formatDate, sortArabic, withPodcastMeta } from '../../lib/content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const articles = sortArabic(await getCollection('arabic'));
+---
+
+<BaseLayout title="Arapça İlimleri" description="Nahiv, sarf, belâgat ve kelime analizi dersleri." searchCategory="Arapça">
+  <div class="mx-auto max-w-6xl px-4 py-10">
+    <p class="text-xs font-semibold uppercase tracking-[0.16em] text-amber-800 dark:text-amber-200">Arapça</p>
+    <h1 class="mt-3 font-serif text-4xl text-stone-950 dark:text-amber-50">İlim dersleri</h1>
+    <p class="mt-4 max-w-2xl leading-7 text-slate-600 dark:text-slate-300">
+      Dersler ilim ilim ayrılır. Nahiv, sarf, belâgat ve kelime analizi birbirine karışmaz. Bu bölüm de Bayyinah TV derslerinden derlenen bağımsız çalışma notlarıdır.
+    </p>
+    <div data-tag-banner hidden class="mt-6 flex items-center justify-between gap-3 rounded-2xl bg-amber-100 px-4 py-3 text-sm text-amber-950 dark:bg-amber-900/40 dark:text-amber-50">
+      <p>
+        Etiket: <strong data-tag-name></strong>
+      </p>
+      <a href="/arapca" class="font-semibold underline">Tüm ilimler</a>
+    </div>
+    <p data-tag-empty hidden class="mt-6 text-sm text-slate-500">Bu etiketle eşleşen konu yok.</p>
+
+    <div class="mt-10 grid gap-4 md:grid-cols-2" data-browse data-pagefind-ignore="all">
+      {
+        arabicCategoryOrder.map((category) => {
+          const count = articles.filter((article) => article.data.category === category).length;
+          return (
+            <ContentCard
+              href={`/arapca/${category}`}
+              eyebrow={arabicCategoryLabels[category]}
+              title={arabicCategoryLabels[category]}
+              summary={arabicCategoryDescriptions[category]}
+              meta={count === 0 ? 'Henüz ders yok' : `${count} ders`}
+            />
+          );
+        })
+      }
+    </div>
+
+    <div class="mt-8" data-tag-results hidden>
+      <EntryList
+        items={articles.map((article) => ({
+          href: `/arapca/${article.slug}`,
+          kicker: arabicCategoryLabels[article.data.category],
+          title: article.data.title,
+          detail: `${difficultyLabels[article.data.difficulty]} · ${article.data.summary}`,
+          meta: withPodcastMeta(formatDate(article.data.publishDate), article.data.audio),
+          tags: article.data.tags,
+        }))}
+      />
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  import '../../scripts/tag-filter.ts';
+</script>

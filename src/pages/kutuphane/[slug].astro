@@ -1,0 +1,23 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import LibraryLayout from '../../layouts/LibraryLayout.astro';
+
+export async function getStaticPaths() {
+  const notes = await getCollection('library');
+  return notes.map((note) => ({
+    params: { slug: note.slug },
+    props: { note },
+  }));
+}
+
+interface Props {
+  note: CollectionEntry<'library'>;
+}
+
+const { note } = Astro.props;
+const { Content } = await note.render();
+---
+
+<LibraryLayout note={note}>
+  <Content />
+</LibraryLayout>
