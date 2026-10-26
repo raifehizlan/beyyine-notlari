@@ -45,11 +45,11 @@ export function lessonParts(entry: CollectionEntry<'deeper-look'>) {
 
 export function lessonHref(entry: CollectionEntry<'deeper-look'>) {
   const { surah, slug } = lessonParts(entry);
-  return `/deeper-look/${surah}/${slug}`;
+  return `/tefsir/${surah}/${slug}`;
 }
 
 export function surahHref(surahNumber: number) {
-  return `/deeper-look/sure/${surahNumber}`;
+  return `/tefsir/sure/${surahNumber}`;
 }
 
 export function verseSpan(ranges: string[]) {
@@ -135,7 +135,7 @@ export function withPodcastMeta(
 }
 
 export function tagHref(tag: string) {
-  return `/deeper-look?etiket=${encodeURIComponent(tag)}`;
+  return `/tefsir?etiket=${encodeURIComponent(tag)}`;
 }
 
 export function bookSlug(value: string) {

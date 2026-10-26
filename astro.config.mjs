@@ -7,6 +7,11 @@ import { gelenDersler } from './scripts/gelen-dersler.mjs';
 
 export default defineConfig({
   integrations: [gelenDersler(), mdx(), react(), tailwind({ applyBaseStyles: false })],
+  redirects: {
+    '/deeper-look': '/tefsir',
+    '/deeper-look/sure/[surah]': '/tefsir/sure/[surah]',
+    '/deeper-look/[surah]/[slug]': '/tefsir/[surah]/[slug]',
+  },
   vite: {
     resolve: {
       alias: {
